@@ -171,18 +171,23 @@ namespace TankWars
                 //draw stuff
 
                 Console.Clear();
+                Console.BackgroundColor = ConsoleColor.White;
                 //player
                 Console.SetCursorPosition(Player.X, Player.Y);
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write("(0)");
                 //score
                 Console.SetCursorPosition(50, 10);
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write("Your score is ... : {0}", score);
                 //target
                 Console.SetCursorPosition(Target.X, Target.Y);
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("T");
 
 
                 //bots
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 for (int i = 0; i < botsCount; i++)
                 {
                     Console.SetCursorPosition(Bots[i].X, Bots[i].Y);
