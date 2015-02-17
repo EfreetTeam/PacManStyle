@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BaseLogicImplementation.cs" />
     <Compile Include="PacManStyle.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
