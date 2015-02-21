@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 class PacManStyle
 {
@@ -37,45 +39,50 @@ class PacManStyle
         }
     }
 
-//  static void Main()
-//  {
-//      int currentBoardNumber = 1; // initialized for board No.1
-//      int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
-//
-//      // Alternatively for testing purposes, instead of reading from external file, can be used following board:
-//
-//      //int[,] board = {                                      // 0's = Path - can go through
-//      //{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},          // 1's = Walls - not allowed to go through
-//      //{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-//      //{1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
-//      //{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//      //{1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1},
-//      //{1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
-//      //{1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1},
-//      //{1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,1},
-//      //{1,0,1,1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1},
-//      //{1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1},
-//      //{1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1},
-//      //{1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,1},
-//      //{1,1,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1},
-//      //{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
-//      //{1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
-//      //{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
-//      //{1,1,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1},
-//      //{1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
-//      //{1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,0,1},
-//      //{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-//      //{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-//      //};
-//
-//      PrintBoard(board);                          // Print 1st board
-//
-//      Console.WriteLine();
-//      board = LoadBoard(++currentBoardNumber);    // Load 2nd board from file board2.txt
-//      PrintBoard(board);                          // Print 2nd board
-//
-//      Console.WriteLine();
-//      board = LoadBoard(++currentBoardNumber);    // Load 3rd board from file board3.txt
-//      PrintBoard(board);                          // Print 3rd board
-//  }
+    static void Main()
+    {
+        int currentBoardNumber = 1; // initialized for board No.1
+        int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
+
+        // Alternatively for testing purposes, instead of reading from external file, can be used following board:
+
+        //int[,] board = {                                      // 0's = Path - can go through
+        //{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},          // 1's = Walls - not allowed to go through
+        //{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+        //{1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
+        //{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        //{1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1},
+        //{1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
+        //{1,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,0,1,1,1},
+        //{1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,1},
+        //{1,0,1,1,1,0,1,0,1,1,0,1,1,0,1,0,1,1,1,0,1},
+        //{1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1},
+        //{1,0,1,1,1,0,1,0,1,1,1,1,1,0,1,0,1,1,1,0,1},
+        //{1,0,0,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,1},
+        //{1,1,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1},
+        //{1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1},
+        //{1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1},
+        //{1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1},
+        //{1,1,1,0,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1,1},
+        //{1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1},
+        //{1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,1,0,1},
+        //{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        //{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+        //};
+        while (true)
+        {
+            PrintBoard(board);
+            Thread.Sleep(200);
+            Console.Clear();// Print 1st board
+        }
+        
+
+        //Console.WriteLine();
+        //board = LoadBoard(++currentBoardNumber);    // Load 2nd board from file board2.txt
+        //PrintBoard(board);                          // Print 2nd board
+
+        //Console.WriteLine();
+        //board = LoadBoard(++currentBoardNumber);    // Load 3rd board from file board3.txt
+        //PrintBoard(board);                          // Print 3rd board
+    }
 }

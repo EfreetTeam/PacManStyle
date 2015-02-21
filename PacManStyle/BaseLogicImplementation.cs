@@ -16,55 +16,55 @@ namespace TankWars
         static Random randomIntGenerator = new Random();
         static Position[] directions = GetDirections();
 
-        static void Main()
-        {
-            string[] botsSymbols = new string[]
-            {
-                "@",
-                "$",
-                "*",
-                "#"
-            };
+        //static void Main()
+        //{
+        //    string[] botsSymbols = new string[]
+        //    {
+        //        "@",
+        //        "$",
+        //        "*",
+        //        "#"
+        //    };
 
-            int score = 0;
-            Console.BufferHeight = Console.WindowHeight;
-            Position player = InitializePlayer();
-            List<Position> bots = GenerateBots();
-            Position target = GenerateTarget();
+        //    int score = 0;
+        //    Console.BufferHeight = Console.WindowHeight;
+        //    Position player = InitializePlayer();
+        //    List<Position> bots = GenerateBots();
+        //    Position target = GenerateTarget();
          
-            DrawBots(bots, botsSymbols);
-            //game loop logic.
-            bool gamerunning = true;
+        //    DrawBots(bots, botsSymbols);
+        //    //game loop logic.
+        //    bool gamerunning = true;
 
-            while (gamerunning)
-            {
-                bool targetAcquired = false;
-                if (Console.KeyAvailable)
-                {
-                    player = MovePlayer(player);
-                }
+        //    while (gamerunning)
+        //    {
+        //        bool targetAcquired = false;
+        //        if (Console.KeyAvailable)
+        //        {
+        //            player = MovePlayer(player);
+        //        }
 
-                bots = BotCrashTests(bots);
-                bots = MoveBotsPosition(bots);
-                targetAcquired = IsTargetAcquired(player, target);
-                if (targetAcquired)
-                {
-                    target = GenerateNewTarget();
-                    score++;
-                }
+        //        bots = BotCrashTests(bots);
+        //        bots = MoveBotsPosition(bots);
+        //        targetAcquired = IsTargetAcquired(player, target);
+        //        if (targetAcquired)
+        //        {
+        //            target = GenerateNewTarget();
+        //            score++;
+        //        }
 
-                DrawConsoleLayout();
-                DrawPlayer(player);
-                DrawPlayerScore(score);
-                DrawTarget(target);
-                DrawBots(bots, botsSymbols);
+        //        DrawConsoleLayout();
+        //        DrawPlayer(player);
+        //        DrawPlayerScore(score);
+        //        DrawTarget(target);
+        //        DrawBots(bots, botsSymbols);
 
-                Thread.Sleep(200);
-                //check if dead.
-                gamerunning = CheckIfBotHitPlayer(bots, player, score);
+        //        Thread.Sleep(200);
+        //        //check if dead.
+        //        gamerunning = CheckIfBotHitPlayer(bots, player, score);
 
-            }
-        }
+        //    }
+        //}
 
         static Position InitializePlayer()
         {
