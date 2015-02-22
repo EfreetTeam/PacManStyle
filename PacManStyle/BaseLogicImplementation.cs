@@ -25,8 +25,8 @@ namespace TankWars
     class Program
     {
 
-       public static int matrixHeight = 20;
-       public  static int matrixWidth = 20;
+        static int matrixHeight = 20;
+        static int matrixWidth = 20;
         static int botsCount = 4;
         static Random randomIntGenerator = new Random();
         static Position[] directions = GetDirections();
@@ -140,9 +140,7 @@ namespace TankWars
             int currentCordinateY = 0;
             for (int bot = 0; bot < botsCount; bot++)
             {
-                if (bots[bot].X <= 3
-
-                    )
+                if (bots[bot].X <= 3) // to extract in method
                 {
                     crashedBotCoordinateX = bots[bot].X;
                     crashedBotCoordinateY = bots[bot].Y;
@@ -165,29 +163,32 @@ namespace TankWars
                 }
                 if (bots[bot].X > matrixWidth - 3)
                 {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    crashedBotCurrentDirection = 1;
-                    bots.RemoveAt(bot);
-                    bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
+                    bots = SetBotPosition(bots, 1, bot);
                 }
+
                 if (bots[bot].Y < 3)
                 {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    crashedBotCurrentDirection = 3;
-                    bots.RemoveAt(bot);
-                    bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
+                   bots = SetBotPosition(bots, 3, bot);
                 }
+
                 if (bots[bot].Y > matrixHeight - 3)
                 {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    crashedBotCurrentDirection = 2;
-                    bots.RemoveAt(bot);
-                    bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
+                  bots =  SetBotPosition(bots, 2, bot);
                 }
             }
+
+            return bots;
+        }
+
+        static List<Position> SetBotPosition(List<Position> bots, int crashedBotCurrentDirection, int currentBot)
+        {
+            int crashedBotCoordinateX = 0;
+            int crashedBotCoordinateY = 0;
+
+            crashedBotCoordinateX = bots[currentBot].X;
+            crashedBotCoordinateY = bots[currentBot].Y;
+            bots.RemoveAt(currentBot);
+            bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
 
             return bots;
         }
