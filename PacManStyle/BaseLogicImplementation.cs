@@ -69,7 +69,7 @@ namespace TankWars
                 {
                     player = MovePlayer(player);
                 }
-
+                CheckIfOnWall(bots, board);
                 bots = BotCrashTests(bots);
                 bots = MoveBotsPosition(bots);
                 targetAcquired = IsTargetAcquired(player, target);
@@ -336,6 +336,39 @@ namespace TankWars
 
             return targetAcquired;
         }
+        static void CheckIfOnWall(List<Position> bots,int[,]board)
+        {
+            int currentPosX = 0;
+            int currentPosY = 0;
+            int oldDirection = 0;
+            bool correctDirection = false;
+            int currDirection = 0;
+            for (int i = 0; i < bots.Count; i++)
+            {
+                currentPosX = bots[i].X;
+                currentPosY = bots[i].Y;
+                oldDirection = bots[i].CurrentDirectionBot;
+                if (board[currentPosX, currentPosY] == 1
+            || board[currentPosX + directions[bots[i].CurrentDirectionBot].X, currentPosY - directions[bots[i].CurrentDirectionBot].Y] == 0
+                    )
+                {
+                    while (correctDirection == false)
+                    {
+                        currDirection = randomIntGenerator.Next(0, 4);
+                        if (board[currentPosX + directions[currDirection].X, currentPosY - directions[currDirection].Y] == 0)
+                        {
+                            correctDirection = true;
+                        }
+
+
+                    }
+                    correctDirection = false;
+                    bots.RemoveAt(i);
+                    bots.Add(new Position(currentPosX, currentPosY, currDirection));
+
+                }
+            }
+            }
 
 
         // maze
