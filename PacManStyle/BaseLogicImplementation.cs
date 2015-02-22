@@ -395,14 +395,17 @@ namespace TankWars
         }
         static void PrintBoard(int[,] board)
         {
+            StringBuilder sb = new StringBuilder();
+
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    Console.Write(board[i, j] == 1 ? ((char)1).ToString() : " ");    // 1's (☺) = Walls -> not allowed to go through | 0's -> maze path free to go through
+                    sb.Append(board[i, j] == 1 ? ((char)1).ToString() : " ");    // 1's (☺) = Walls -> not allowed to go through | 0's -> maze path free to go through
                 }
-                Console.WriteLine();
+                sb.Append("\n");
             }
+            Console.WriteLine(sb);
         }
     }
 }
