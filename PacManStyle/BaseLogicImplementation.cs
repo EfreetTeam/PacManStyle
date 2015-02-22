@@ -8,63 +8,78 @@ using System.Collections;
 
 namespace TankWars
 {
+    struct Position
+    {
+        public int X;
+        public int Y;
+        public int CurrentDirectionBot;
+        public Position(int X, int Y, int CurrentDirectionBot)
+        {
+            this.X = X;
+            this.Y = Y;
+            this.CurrentDirectionBot = CurrentDirectionBot;
+        }
+    }
+
     class Program
     {
+
         static int matrixHeight = 20;
         static int matrixWidth = 20;
         static int botsCount = 4;
         static Random randomIntGenerator = new Random();
         static Position[] directions = GetDirections();
 
-        //static void Main()
-        //{
-        //    string[] botsSymbols = new string[]
-        //    {
-        //        "@",
-        //        "$",
-        //        "*",
-        //        "#"
-        //    };
+        static void Main()
+        {
+            string[] botsSymbols = new string[]
+            {
+                "@",
+                "$",
+                "*",
+                "#"
+            };
 
-        //    int score = 0;
-        //    Console.BufferHeight = Console.WindowHeight;
-        //    Position player = InitializePlayer();
-        //    List<Position> bots = GenerateBots();
-        //    Position target = GenerateTarget();
-         
-        //    DrawBots(bots, botsSymbols);
-        //    //game loop logic.
-        //    bool gamerunning = true;
+            int score = 0;
+            Console.BufferHeight = Console.WindowHeight;
+            Position player = InitializePlayer();
+            List<Position> bots = GenerateBots();
+            Position target = GenerateTarget();
 
-        //    while (gamerunning)
-        //    {
-        //        bool targetAcquired = false;
-        //        if (Console.KeyAvailable)
-        //        {
-        //            player = MovePlayer(player);
-        //        }
+            DrawBots(bots, botsSymbols);
+            //game loop logic.
+            bool gamerunning = true;
 
-        //        bots = BotCrashTests(bots);
-        //        bots = MoveBotsPosition(bots);
-        //        targetAcquired = IsTargetAcquired(player, target);
-        //        if (targetAcquired)
-        //        {
-        //            target = GenerateNewTarget();
-        //            score++;
-        //        }
+            while (gamerunning)
+            {
+                //set window width and height
+                bool targetAcquired = false;
+                if (Console.KeyAvailable)
+                {
+                    player = MovePlayer(player);
+                }
 
-        //        DrawConsoleLayout();
-        //        DrawPlayer(player);
-        //        DrawPlayerScore(score);
-        //        DrawTarget(target);
-        //        DrawBots(bots, botsSymbols);
+                bots = BotCrashTests(bots);
+                bots = MoveBotsPosition(bots);
+                targetAcquired = IsTargetAcquired(player, target);
+                if (targetAcquired)
+                {
+                    target = GenerateNewTarget();
+                    score++;
+                }
 
-        //        Thread.Sleep(200);
-        //        //check if dead.
-        //        gamerunning = CheckIfBotHitPlayer(bots, player, score);
+                DrawConsoleLayout();
+                DrawPlayer(player);
+                DrawPlayerScore(score);
+                DrawTarget(target);
+                DrawBots(bots, botsSymbols);
 
-        //    }
-        //}
+                Thread.Sleep(200);
+                //check if dead.
+                gamerunning = CheckIfBotHitPlayer(bots, player, score);
+
+            }
+        }
 
         static Position InitializePlayer()
         {
@@ -116,7 +131,16 @@ namespace TankWars
                 {
                     crashedBotCoordinateX = bots[bot].X;
                     crashedBotCoordinateY = bots[bot].Y;
-                    crashedBotCurrentDirection = 0;
+                    //crashedBotCurrentDirection = 0;
+                    bool correctDirection = false;
+                    while (correctDirection == false)
+                    {
+                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
+                        if (crashedBotCurrentDirection != 1)
+                        {
+                            correctDirection = true;
+                        }
+                    }
                     bots.RemoveAt(bot);
                     bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
 
@@ -199,9 +223,11 @@ namespace TankWars
 
         static void DrawBots(List<Position> bots, string[] botsSymbols)
         {
-              Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             for (int i = 0; i < bots.Count; i++)
             {
+                //set symbol according to direction.
+
                 Console.SetCursorPosition(bots[i].X, bots[i].Y);
                 Console.Write(botsSymbols[i]);
             }
