@@ -241,8 +241,10 @@ namespace TankWars
             for (int i = 0; i < bots.Count; i++)
             {
                 //set symbol according to direction.
+                // X,Y,Z x,y coordinate Z currentdirection 0,1,2,3 4 < > ^ 
 
                 Console.SetCursorPosition(bots[i].X, bots[i].Y);
+                // Console.Write(botsSymbols[bots[bot].currentDirection]);
                 Console.Write(botsSymbols[i]);
             }
         }
