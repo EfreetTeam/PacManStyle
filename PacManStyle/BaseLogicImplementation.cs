@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections;
+using System.IO;
 
 namespace TankWars
 {
@@ -24,8 +25,8 @@ namespace TankWars
     class Program
     {
 
-        static int matrixHeight = 20;
-        static int matrixWidth = 20;
+       public static int matrixHeight = 20;
+       public  static int matrixWidth = 20;
         static int botsCount = 4;
         static Random randomIntGenerator = new Random();
         static Position[] directions = GetDirections();
@@ -39,8 +40,13 @@ namespace TankWars
                 "*",
                 "#"
             };
-
+            
             int score = 0;
+            int currentBoardNumber = 2; // initialized for board No.1
+            int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
+            matrixHeight = board.GetLength(0);
+            matrixWidth = board.GetLength(1);
+            
             Console.BufferHeight = Console.WindowHeight;
             Position player = InitializePlayer();
             List<Position> bots = GenerateBots();
@@ -69,6 +75,8 @@ namespace TankWars
                 }
 
                 DrawConsoleLayout();
+
+                PrintBoard(board);
                 DrawPlayer(player);
                 DrawPlayerScore(score);
                 DrawTarget(target);
@@ -85,7 +93,7 @@ namespace TankWars
         {
             Position player = new Position(0, 0, 0);
             Console.SetCursorPosition(player.X, player.Y);
-            Console.Write("(0)");
+            Console.Write("*");
 
             return player;
         }
@@ -122,7 +130,10 @@ namespace TankWars
         {
             int crashedBotCoordinateX = 0;
             int crashedBotCoordinateY = 0;
+ 
             int crashedBotCurrentDirection = 0;
+            int currentCordinateX = 0;
+            int currentCordinateY = 0;
             for (int bot = 0; bot < botsCount; bot++)
             {
                 if (bots[bot].X <= 3
@@ -138,6 +149,9 @@ namespace TankWars
                         crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
                         if (crashedBotCurrentDirection != 1)
                         {
+                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                            currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
+                            
                             correctDirection = true;
                         }
                     }
@@ -209,7 +223,7 @@ namespace TankWars
 
             for (int i = 0; i < botsCount; i++)
             {
-                bots.Add(new Position(randomIntGenerator.Next(3, matrixWidth), randomIntGenerator.Next(3, matrixHeight), randomIntGenerator.Next(0, 3)));
+                bots.Add(new Position(randomIntGenerator.Next(3, matrixWidth-1), randomIntGenerator.Next(3, matrixHeight-1), randomIntGenerator.Next(0, 3)));
             }
 
             return bots;
@@ -243,7 +257,7 @@ namespace TankWars
         {
             Console.SetCursorPosition(player.X, player.Y);
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("(0)");
+            Console.Write("*");
         }
 
         static void DrawPlayerScore(int score)
@@ -295,6 +309,39 @@ namespace TankWars
         {
             Position target = new Position(randomIntGenerator.Next(5, matrixWidth - 5), randomIntGenerator.Next(4, matrixHeight - 4), 0);
             return target;
+        }
+        // maze
+        static int[,] LoadBoard(int currentBoardNumber)     // This method can call any of the preset 3 boards, each in separate file, respectively named board1.txt, board2.txt and board3.txt
+        {
+            string path = "../../Boards/board" + currentBoardNumber + ".txt";
+            StreamReader reader = new StreamReader(path);
+
+            using (reader)
+            {
+                int rows = int.Parse(reader.ReadLine());
+                string line = reader.ReadLine();
+                int[,] boardToLoad = new int[rows, line.Length];
+                int lineNumber = 0;
+
+                while (line != null)
+                {
+                    for (int j = 0; j < line.Length; j++) boardToLoad[lineNumber, j] = (line[j]) - '0';
+                    lineNumber++;
+                    line = reader.ReadLine();
+                }
+                return boardToLoad;
+            }
+        }
+        static void PrintBoard(int[,] board)
+        {
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    Console.Write(board[i, j] == 1 ? ((char)1).ToString() : " ");    // 1's (☺) = Walls -> not allowed to go through | 0's -> maze path free to go through
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

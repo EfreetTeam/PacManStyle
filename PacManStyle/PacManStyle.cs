@@ -39,7 +39,7 @@ class PacManStyle
         }
     }
 
-    static void Main()
+    /*static void Main()
     {
         int currentBoardNumber = 1; // initialized for board No.1
         int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
@@ -84,5 +84,5 @@ class PacManStyle
         //Console.WriteLine();
         //board = LoadBoard(++currentBoardNumber);    // Load 3rd board from file board3.txt
         //PrintBoard(board);                          // Print 3rd board
-    }
-}
+    } */
+} 
