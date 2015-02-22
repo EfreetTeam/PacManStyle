@@ -44,20 +44,21 @@ namespace TankWars
                 "\u15e3", // down
                 "\u15e2" // up
             };
-            
+
             int score = 0;
             int currentBoardNumber = 1; // initialized for board No.1
             int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
             matrixHeight = board.GetLength(0);
             matrixWidth = board.GetLength(1);
-            
+
             Console.BufferHeight = Console.WindowHeight;
             Position player = InitializePlayer();
             List<Position> bots = GenerateBots();
             Position target = GenerateTarget();
 
+            //  DrawIntroScreen(); 
+
             DrawBots(bots, botsSymbols);
-            //game loop logic.
             bool gamerunning = true;
 
             while (gamerunning)
@@ -74,7 +75,7 @@ namespace TankWars
                 targetAcquired = IsTargetAcquired(player, target);
                 if (targetAcquired)
                 {
-                    target = GenerateNewTarget();
+                    target = GenerateTarget();
                     score++;
                 }
 
@@ -82,7 +83,7 @@ namespace TankWars
 
                 PrintBoard(board);
                 DrawPlayer(player);
-                DrawPlayerScore(score);
+                DrawPlayerInfo(score);
                 DrawTarget(target);
                 DrawBots(bots, botsSymbols);
 
@@ -90,7 +91,31 @@ namespace TankWars
                 //check if dead.
                 gamerunning = CheckIfBotHitPlayer(bots, player, score);
 
+                // if (lives == 0)
+                // {
+                //     DrawEndScreen();
+                //     break;
+                // }
+
+                // if (currentLive < previousLive)
+                //  {
+                //      player = InitializePlayer();
+                //      bots = GenerateBots();
+                //      target = GenerateTarget();
+                //  }
+
+
             }
+        }
+
+        static void DrawEndScreen()
+        {
+            throw new NotImplementedException();
+        }
+
+        static void DrawIntroScreen()
+        {
+            throw new NotImplementedException();
         }
 
         static Position InitializePlayer()
@@ -134,7 +159,7 @@ namespace TankWars
         {
             int crashedBotCoordinateX = 0;
             int crashedBotCoordinateY = 0;
- 
+
             int crashedBotCurrentDirection = 0;
             int currentCordinateX = 0;
             int currentCordinateY = 0;
@@ -153,7 +178,7 @@ namespace TankWars
                         {
                             currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
                             currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
-                            
+
                             correctDirection = true;
                         }
                     }
@@ -168,12 +193,12 @@ namespace TankWars
 
                 if (bots[bot].Y < 3)
                 {
-                   bots = SetBotPosition(bots, 3, bot);
+                    bots = SetBotPosition(bots, 3, bot);
                 }
 
                 if (bots[bot].Y > matrixHeight - 3)
                 {
-                  bots =  SetBotPosition(bots, 2, bot);
+                    bots = SetBotPosition(bots, 2, bot);
                 }
             }
 
@@ -228,7 +253,7 @@ namespace TankWars
 
             for (int i = 0; i < botsCount; i++)
             {
-                bots.Add(new Position(randomIntGenerator.Next(3, matrixWidth-1), randomIntGenerator.Next(3, matrixHeight-1), randomIntGenerator.Next(0, 3)));
+                bots.Add(new Position(randomIntGenerator.Next(3, matrixWidth - 1), randomIntGenerator.Next(3, matrixHeight - 1), randomIntGenerator.Next(0, 3)));
             }
 
             return bots;
@@ -267,7 +292,7 @@ namespace TankWars
             Console.Write("*");
         }
 
-        static void DrawPlayerScore(int score)
+        static void DrawPlayerInfo(int score)
         {
             Console.SetCursorPosition(50, 10);
             Console.ForegroundColor = ConsoleColor.Red;
@@ -312,11 +337,7 @@ namespace TankWars
             return targetAcquired;
         }
 
-        static Position GenerateNewTarget()
-        {
-            Position target = new Position(randomIntGenerator.Next(5, matrixWidth - 5), randomIntGenerator.Next(4, matrixHeight - 4), 0);
-            return target;
-        }
+
         // maze
         static int[,] LoadBoard(int currentBoardNumber)     // This method can call any of the preset 3 boards, each in separate file, respectively named board1.txt, board2.txt and board3.txt
         {
