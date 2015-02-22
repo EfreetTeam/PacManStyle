@@ -42,7 +42,7 @@ namespace TankWars
             };
             
             int score = 0;
-            int currentBoardNumber = 2; // initialized for board No.1
+            int currentBoardNumber = 1; // initialized for board No.1
             int[,] board = LoadBoard(currentBoardNumber); // Load 1st board from file board1.txt
             matrixHeight = board.GetLength(0);
             matrixWidth = board.GetLength(1);
