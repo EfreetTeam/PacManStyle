@@ -38,7 +38,11 @@ namespace TankWars
                 "@",
                 "$",
                 "*",
-                "#"
+                "#",
+                "\u15e4", // left
+                "\u15e7", // right
+                "\u15e3", // down
+                "\u15e2" // up
             };
             
             int score = 0;
