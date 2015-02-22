@@ -267,7 +267,7 @@ namespace TankWars
 
         static void DrawBots(List<Position> bots, string[] botsSymbols)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Blue;
             for (int i = 0; i < bots.Count; i++)
             {
                 //set symbol according to direction.
@@ -303,7 +303,7 @@ namespace TankWars
         {
             Console.SetCursorPosition(target.X, target.Y);
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("T");
+            Console.Write((char)3);
         }
 
         static bool CheckIfBotHitPlayer(List<Position> bots, Position player, int score)
@@ -401,10 +401,11 @@ namespace TankWars
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    sb.Append(board[i, j] == 1 ? ((char)1).ToString() : " ");    // 1's (☺) = Walls -> not allowed to go through | 0's -> maze path free to go through
+                    sb.Append(board[i, j] == 1 ? ((char)2).ToString() : " ");    // 1's (☺) = Walls -> not allowed to go through | 0's -> maze path free to go through
                 }
                 sb.Append("\n");
             }
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine(sb);
         }
     }
