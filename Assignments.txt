@@ -1,0 +1,61 @@
+-find ASCII symbols for wall/ player/ bots( corresponding to direcion ) *Georgi
+-fix initial Player position & initial Bot Position & Target Position ;
+-method architecture 	*will be done by Ilian.
+-drawing by stringBuilder *will be done by Joro.
+-logic for collision with maze/ bots - change direction player-unable to proceed & change symbol according to direction. 	*Vasil
+-bots AI for right/up/down (left done.) 	*Vasil
+-have lives. / when crash - keep score, move player to initial position, take one life away. if(lifes==0) {exit screen with
+ASCII art & some music (.WAV)) 	*will be done by Daniel.
+-ASCII introScreen & ASCII outScreen 	*Will be done by Plamen.
+
+-Bossfight /when score is %5==0 (except for 0) *Vasil
+*Add music. *will be done by Georgi.
+*Increase botCount
+*Decrease Thread.Sleep so bots move faster.
+
+
+-Audio Production - Emil.
+-Presentation & Docuentation - Ivan
+
+
+ 
+
+
+*shortest path (eventually when done) *eventually done by Georgi.
+
+	
+
+
+
+/*
+crashedBotCoordinateX = bots[bot].X;
+                crashedBotCoordinateY = bots[bot].Y;
+                currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
+                bool correctDirection = true;
+                bool anotherDirectionCorrect = false;
+                if (board[currentCordinateX, currentCordinateY] == 1)
+                {
+                    correctDirection = false;
+                }
+                if (correctDirection == false)
+                {
+                    while (anotherDirectionCorrect == false)
+                    {
+                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
+                        currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                        currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
+                        if (board[crashedBotCoordinateX, crashedBotCoordinateY] == 0)
+                        {
+                            anotherDirectionCorrect = true;
+                        }
+
+                    }
+                    bots.RemoveAt(bot);
+                    bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
+
+                }
+*/
+
+
+
