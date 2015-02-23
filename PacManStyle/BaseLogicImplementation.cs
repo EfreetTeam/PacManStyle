@@ -51,9 +51,8 @@ namespace TankWars
 
             Console.BufferHeight = Console.WindowHeight;
             //  DrawIntroScreen(); 
-
-            // PrintBoard(board); uncomment after bots fix
-            // DrawConsoleLayout(); uncomment after bots fix
+            DrawConsoleLayout();
+            PrintBoard(board);          
             Position player = InitializePlayer();
             List<Position> bots = GenerateBots();
             Position target = GenerateTarget(); 
@@ -63,7 +62,7 @@ namespace TankWars
 
             while (gamerunning)
             {
-                // ClearConsole(player, target, bots);  uncomment after bots fix
+                ClearConsole(player, target, bots);
                 bool targetAcquired = false;
 
                 if (Console.KeyAvailable)
@@ -81,8 +80,6 @@ namespace TankWars
                     score++;
                 }
 
-                DrawConsoleLayout(); // to remove after bots fix
-                PrintBoard(board); // to remove after bots fix
                 DrawPlayer(player);
                 DrawPlayerInfo(score);
                 DrawTarget(target);
