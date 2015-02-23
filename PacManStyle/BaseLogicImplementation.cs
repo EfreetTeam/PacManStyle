@@ -46,17 +46,18 @@ namespace TankWars
             int score = 0;
             int currentBoardNumber = 1;                         // initialized for board No.1
             int[,] board = LoadBoard(currentBoardNumber);       // Load 1st board from file board1.txt
+            int lives = 3;
             matrixHeight = board.GetLength(0);
             matrixWidth = board.GetLength(1);
 
             Console.BufferHeight = Console.WindowHeight;
             //  DrawIntroScreen(); 
             DrawConsoleLayout();
-            PrintBoard(board);          
+            PrintBoard(board);
             Position player = InitializePlayer();
             List<Position> bots = GenerateBots();
-            Position target = GenerateTarget(); 
-     
+            Position target = GenerateTarget();
+
             DrawBots(bots, botsSymbols);
             bool gamerunning = true;
 
@@ -81,7 +82,7 @@ namespace TankWars
                 }
 
                 DrawPlayer(player);
-                DrawPlayerInfo(score);
+                DrawPlayerInfo(score, lives);
                 DrawTarget(target);
                 DrawBots(bots, botsSymbols);
 
@@ -89,11 +90,20 @@ namespace TankWars
                 //check if dead.
                 gamerunning = CheckIfBotHitPlayer(bots, player, score);
 
-                // if (lives == 0)
-                // {
-                //     DrawEndScreen();
-                //     break;
-                // }
+                if (!gamerunning)
+                {
+                    lives--;
+                    if (lives > 0)
+                    {
+                        player = InitializePlayer();
+                        bots = GenerateBots();
+                        gamerunning = true;
+                    }
+                    else
+                    {
+                        DrawEndScreen(score);
+                    }
+                }
 
                 // if (currentLive < previousLive)
                 //  {
@@ -101,6 +111,7 @@ namespace TankWars
                 //      bots = GenerateBots();
                 //      target = GenerateTarget();
                 //  }
+
             }
         }
 
@@ -119,9 +130,14 @@ namespace TankWars
             }
         }
 
-        static void DrawEndScreen()
+        static void DrawEndScreen(int score)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Game OVER ! Your score is ... {0} ", score);
         }
 
         static void DrawBossScreen()                    // this method should be called just before Boss fight starts
@@ -322,11 +338,13 @@ namespace TankWars
             Console.Write("" + (char)1);
         }
 
-        static void DrawPlayerInfo(int score)
+        static void DrawPlayerInfo(int score, int lives)             //<==
         {
             Console.SetCursorPosition(50, 10);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Your score is ... : {0}", score);
+            Console.SetCursorPosition(50, 11);
+            Console.Write("Lives: {0} x ♥", lives);
         }
 
         static void DrawTarget(Position target)
@@ -344,12 +362,14 @@ namespace TankWars
             {
                 if (bots[i].X == player.X && bots[i].Y == player.Y)
                 {
-                    Console.Clear();
-                    Console.SetCursorPosition(0, 0);
-                    Console.BackgroundColor = ConsoleColor.DarkMagenta;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("Game OVER ! Your score is ... {0} ", score);
+
+                    //Console.Clear();
+                    //Console.SetCursorPosition(0, 0);
+                    //Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                    //Console.ForegroundColor = ConsoleColor.Green;
+                    //Console.Write("Game OVER ! Your score is ... {0} ", score);
                     gamerunning = false;
+                    return gamerunning;
                 }
             }
 
@@ -435,5 +455,6 @@ namespace TankWars
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine(sb);
         }
+
     }
 }
