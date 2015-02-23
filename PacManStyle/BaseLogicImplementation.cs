@@ -50,18 +50,20 @@ namespace TankWars
             matrixWidth = board.GetLength(1);
 
             Console.BufferHeight = Console.WindowHeight;
-            Position player = InitializePlayer();
-            List<Position> bots = GenerateBots();
-            Position target = GenerateTarget();
-
             //  DrawIntroScreen(); 
 
+            // PrintBoard(board); uncomment after bots fix
+            // DrawConsoleLayout(); uncomment after bots fix
+            Position player = InitializePlayer();
+            List<Position> bots = GenerateBots();
+            Position target = GenerateTarget(); 
+     
             DrawBots(bots, botsSymbols);
             bool gamerunning = true;
 
             while (gamerunning)
             {
-                //set window width and height
+                // ClearConsole(player, target, bots);  uncomment after bots fix
                 bool targetAcquired = false;
 
                 if (Console.KeyAvailable)
@@ -79,9 +81,8 @@ namespace TankWars
                     score++;
                 }
 
-                DrawConsoleLayout();
-
-                PrintBoard(board);
+                DrawConsoleLayout(); // to remove after bots fix
+                PrintBoard(board); // to remove after bots fix
                 DrawPlayer(player);
                 DrawPlayerInfo(score);
                 DrawTarget(target);
@@ -103,6 +104,21 @@ namespace TankWars
                 //      bots = GenerateBots();
                 //      target = GenerateTarget();
                 //  }
+            }
+        }
+
+        static void ClearConsole(Position player, Position target, List<Position> bots)
+        {
+            Console.SetCursorPosition(player.X, player.Y);
+            Console.Write(" ");
+            Console.SetCursorPosition(50, 10);
+            Console.Write(" ");
+            Console.SetCursorPosition(target.X, target.Y);
+            Console.Write(" ");
+            for (int i = 0; i < bots.Count; i++)
+            {
+                Console.SetCursorPosition(bots[i].X, bots[i].Y);
+                Console.Write(" ");
             }
         }
 
