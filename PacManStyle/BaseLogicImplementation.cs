@@ -69,9 +69,9 @@ namespace TankWars
                 {
                     player = MovePlayer(player);
                 }
-                CheckIfOnWall(bots, board);
+                
                 bots = BotCrashTests(bots);
-                bots = MoveBotsPosition(bots);
+                bots = MoveBotsPosition(bots,board);
                 targetAcquired = IsTargetAcquired(player, target);
 
                 if (targetAcquired)
@@ -249,19 +249,59 @@ namespace TankWars
             return bots;
         }
 
-        static List<Position> MoveBotsPosition(List<Position> bots)
+        static List<Position> MoveBotsPosition(List<Position> bots,int[,] board)
         {
             int randomDirection = 0;
-
+            int currCordinateX = 0;
+            int currCordinateY = 0;
+            int currDirection = 0;
+            bool CorrectDirection = false;
+            int nextPosX = 0;
+            int nextPosY = 0;
             List<Position> CopyBots = new List<Position>(bots);
             bots.Clear();
             for (int i = 0; i < botsCount; i++)
             {
                 randomDirection = CopyBots[i].CurrentDirectionBot;
-                bots.Add(new Position(CopyBots[i].X + directions[randomDirection].X, CopyBots[i].Y - directions[randomDirection].Y, randomDirection));
+                nextPosX = CopyBots[i].X + directions[randomDirection].X;
+                nextPosY = CopyBots[i].Y - directions[randomDirection].Y;
+                currCordinateX = CopyBots[i].X;
+                currCordinateY = CopyBots[i].Y;
+                CorrectDirection = false;
+                if (board[nextPosX, nextPosY] == 1)
+                {
+                    CorrectDirection = false;
+                    while (CorrectDirection == false)
+                    {
+                        currDirection = randomIntGenerator.Next(0, 4);
+                        if(currDirection!=randomDirection &&
+                            board[currCordinateX + directions[currDirection].X, currCordinateY - directions[currDirection].Y] == 0)
+                        {
+                            CorrectDirection = true;
+                            CopyBots[i] = new Position(currCordinateX, currCordinateY, currDirection);
+                        }
+                    }
+                    
+                    
+                }
+                else
+                {
+                    CorrectDirection = true;
+                }
+                
             }
+            if (CorrectDirection)
+            {
+                for (int i = 0; i < botsCount; i++)
+                {
 
-            return bots;
+                    randomDirection = CopyBots[i].CurrentDirectionBot;
+                    bots.Add(new Position(CopyBots[i].X + directions[randomDirection].X, CopyBots[i].Y - directions[randomDirection].Y, randomDirection));
+                }
+
+            }
+                return bots;
+            
         }
 
         static Position[] GetDirections()
@@ -283,7 +323,7 @@ namespace TankWars
 
             for (int i = 0; i < botsCount; i++)
             {
-                bots.Add(new Position(randomIntGenerator.Next(3, matrixWidth - 1), randomIntGenerator.Next(3, matrixHeight - 1), randomIntGenerator.Next(0, 3)));
+                bots.Add(new Position(randomIntGenerator.Next(1, matrixWidth - 1), randomIntGenerator.Next(1, matrixHeight - 1), randomIntGenerator.Next(0, 3)));
             }
 
             return bots;
