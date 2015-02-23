@@ -55,7 +55,7 @@ namespace TankWars
             DrawConsoleLayout();
             PrintBoard(board);
             Position player = InitializePlayer();
-            List<Position> bots = GenerateBots();
+            List<Position> bots = GenerateBots(board);
             Position target = GenerateTarget();
 
             DrawBots(bots, botsSymbols);
@@ -96,7 +96,7 @@ namespace TankWars
                     if (lives > 0)
                     {
                         player = InitializePlayer();
-                        bots = GenerateBots();
+                        bots = GenerateBots(board);
                         gamerunning = true;
                     }
                     else
@@ -221,7 +221,70 @@ namespace TankWars
                     while (correctDirection == false)
                     {
                         crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 1)
+                        if (crashedBotCurrentDirection != 1 )
+                        {
+                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
+
+                            correctDirection = true;
+                        }
+                    }
+                    
+                    bots[bot]=new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
+                }
+
+                if (bots[bot].X > matrixWidth - 3)
+                {
+                    crashedBotCoordinateX = bots[bot].X;
+                    crashedBotCoordinateY = bots[bot].Y;
+                    //crashedBotCurrentDirection = 0;
+                    bool correctDirection = false;
+                    while (correctDirection == false)
+                    {
+                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
+                        if (crashedBotCurrentDirection != 0)
+                        {
+                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
+
+                            correctDirection = true;
+                        }
+                    }
+                   
+                    bots[bot]=new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
+                }
+
+                if (bots[bot].Y < 2)
+                {
+                    crashedBotCoordinateX = bots[bot].X;
+                    crashedBotCoordinateY = bots[bot].Y;
+                    //crashedBotCurrentDirection = 0;
+                    bool correctDirection = false;
+                    while (correctDirection == false)
+                    {
+                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
+                        if (crashedBotCurrentDirection != 3)
+                        {
+                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
+                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
+
+                            correctDirection = true;
+                        }
+                    }
+
+                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
+                }
+
+                if (bots[bot].Y > matrixHeight - 3)
+                {
+                    crashedBotCoordinateX = bots[bot].X;
+                    crashedBotCoordinateY = bots[bot].Y;
+                    //crashedBotCurrentDirection = 0;
+                    bool correctDirection = false;
+                    while (correctDirection == false)
+                    {
+                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
+                        if (crashedBotCurrentDirection != 3)
                         {
                             currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
                             currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
@@ -229,23 +292,8 @@ namespace TankWars
                             correctDirection = true;
                         }
                     }
-                    bots.RemoveAt(bot);
-                    bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
-                }
 
-                if (bots[bot].X > matrixWidth - 3)
-                {
-                    bots = SetBotPosition(bots, 1, bot);
-                }
-
-                if (bots[bot].Y < 3)
-                {
-                    bots = SetBotPosition(bots, 3, bot);
-                }
-
-                if (bots[bot].Y > matrixHeight - 3)
-                {
-                    bots = SetBotPosition(bots, 2, bot);
+                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
                 }
             }
 
@@ -333,13 +381,26 @@ namespace TankWars
             return directions;
         }
 
-        static List<Position> GenerateBots()
+        static List<Position> GenerateBots(int[,] board)
         {
             List<Position> bots = new List<Position>();
-
+            bool AllRightPosition;
             for (int i = 0; i < botsCount; i++)
             {
-                bots.Add(new Position(randomIntGenerator.Next(1, matrixWidth - 1), randomIntGenerator.Next(1, matrixHeight - 1), randomIntGenerator.Next(0, 3)));
+                AllRightPosition = false;
+                int randomX = randomIntGenerator.Next(1, matrixWidth - 1);
+                int randomY = randomIntGenerator.Next(1, matrixHeight - 1);
+                while (AllRightPosition == false)
+                {
+                    randomY = randomIntGenerator.Next(1, matrixHeight - 1);
+                    randomX = randomIntGenerator.Next(1, matrixWidth - 1);
+                    if (board[randomX, randomY] == 0)
+                    {
+                        AllRightPosition = true;
+                    }
+                }
+                bots.Add(new Position(randomX, randomY, randomIntGenerator.Next(0, 4)));
+                
             }
 
             return bots;
