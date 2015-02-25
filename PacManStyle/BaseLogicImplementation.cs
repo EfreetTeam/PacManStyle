@@ -68,11 +68,11 @@ namespace TankWars
 
                 if (Console.KeyAvailable)
                 {
-                    player = MovePlayer(player);
+                    player = MovePlayer(player, board);
                 }
-                
+
                 bots = BotCrashTests(bots);
-                bots = MoveBotsPosition(bots,board);
+                bots = MoveBotsPosition(bots, board);
                 targetAcquired = IsTargetAcquired(player, target);
 
                 if (targetAcquired)
@@ -117,15 +117,15 @@ namespace TankWars
 
         static void ClearConsole(Position player, Position target, List<Position> bots)
         {
-            Console.SetCursorPosition(player.X, player.Y);
+            Console.SetCursorPosition(player.Y, player.X);
             Console.Write(" ");
             Console.SetCursorPosition(50, 10);
             Console.Write(" ");
-            Console.SetCursorPosition(target.X, target.Y);
+            Console.SetCursorPosition(target.Y, target.X);
             Console.Write(" ");
             for (int i = 0; i < bots.Count; i++)
             {
-                Console.SetCursorPosition(bots[i].X, bots[i].Y);
+                Console.SetCursorPosition(bots[i].Y, bots[i].X);
                 Console.Write(" ");
             }
         }
@@ -164,13 +164,13 @@ namespace TankWars
         static Position InitializePlayer()
         {
             Position player = new Position(1, 1, 0);
-            Console.SetCursorPosition(player.X, player.Y);
+            Console.SetCursorPosition(player.Y, player.X);
             Console.Write("" + (char)1);
 
             return player;
         }
 
-        static Position MovePlayer(Position player)
+        static Position MovePlayer(Position player, int[,] board)
         {
             int direction = 0;
 
@@ -198,7 +198,11 @@ namespace TankWars
             //    return player;
             //}
 
-            player = new Position(player.X + directions[direction].X, player.Y - directions[direction].Y, 0);
+            if (board[player.X + directions[direction].X, player.Y + directions[direction].Y] == 0)
+            {
+                player = new Position(player.X + directions[direction].X, player.Y + directions[direction].Y, 0);
+            }
+
             return player;
         }
 
@@ -221,7 +225,7 @@ namespace TankWars
                     while (correctDirection == false)
                     {
                         crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 1 )
+                        if (crashedBotCurrentDirection != 1)
                         {
                             currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
                             currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
@@ -229,8 +233,8 @@ namespace TankWars
                             correctDirection = true;
                         }
                     }
-                    
-                    bots[bot]=new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
+
+                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
                 }
 
                 if (bots[bot].X > matrixWidth - 3)
@@ -250,8 +254,8 @@ namespace TankWars
                             correctDirection = true;
                         }
                     }
-                   
-                    bots[bot]=new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
+
+                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
                 }
 
                 if (bots[bot].Y < 2)
@@ -313,7 +317,7 @@ namespace TankWars
             return bots;
         }
 
-        static List<Position> MoveBotsPosition(List<Position> bots,int[,] board)
+        static List<Position> MoveBotsPosition(List<Position> bots, int[,] board)
         {
             int randomDirection = 0;
             int currCordinateX = 0;
@@ -338,21 +342,21 @@ namespace TankWars
                     while (CorrectDirection == false)
                     {
                         currDirection = randomIntGenerator.Next(0, 4);
-                        if(currDirection!=randomDirection &&
+                        if (currDirection != randomDirection &&
                             board[currCordinateX + directions[currDirection].X, currCordinateY - directions[currDirection].Y] == 0)
                         {
                             CorrectDirection = true;
                             CopyBots[i] = new Position(currCordinateX, currCordinateY, currDirection);
                         }
                     }
-                    
-                    
+
+
                 }
                 else
                 {
                     CorrectDirection = true;
                 }
-                
+
             }
             if (CorrectDirection)
             {
@@ -364,18 +368,21 @@ namespace TankWars
                 }
 
             }
-                return bots;
-            
+            return bots;
+
         }
 
         static Position[] GetDirections()
         {
             Position[] directions = new Position[] 
             {
-                new Position(1,0,0),    //right
-                new Position(-1,0,0),   //left
-                new Position(0,1,0),    //up
-                new Position(0,-1,0)    //down
+                 new Position(0,1,0),    //right
+                 new Position(0,-1,0),    //left
+                 new Position(-1,0,0),   //up
+                 new Position(1,0, 0)    //down
+                
+               
+               
             };
 
             return directions;
@@ -400,7 +407,7 @@ namespace TankWars
                     }
                 }
                 bots.Add(new Position(randomX, randomY, randomIntGenerator.Next(0, 4)));
-                
+
             }
 
             return bots;
@@ -420,7 +427,7 @@ namespace TankWars
                 //set symbol according to direction.
                 // X,Y,Z x,y coordinate Z currentdirection 0,1,2,3 4 < > ^ 
 
-                Console.SetCursorPosition(bots[i].X, bots[i].Y);
+                Console.SetCursorPosition(bots[i].Y, bots[i].X);
                 // Console.Write(botsSymbols[bots[bot].currentDirection]);
                 Console.Write(botsSymbols[i]);
             }
@@ -434,7 +441,7 @@ namespace TankWars
 
         static void DrawPlayer(Position player)
         {
-            Console.SetCursorPosition(player.X, player.Y);
+            Console.SetCursorPosition(player.Y, player.X);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("" + (char)1);
         }
@@ -450,7 +457,7 @@ namespace TankWars
 
         static void DrawTarget(Position target)
         {
-            Console.SetCursorPosition(target.X, target.Y);
+            Console.SetCursorPosition(target.Y, target.X);
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write((char)3);
         }
