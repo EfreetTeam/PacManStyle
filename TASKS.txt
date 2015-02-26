@@ -1,0 +1,46 @@
+
+MUST HAVE
+
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- FIX BUG for Bots going through walls																				- Ilian
+	-----------------------------------------------------------------------------------------------------------------------------------
+
+	- implementation of BOT-SYMBOLs to be changed when their direction is changed (use provided by Joro P. chars)		- UNASSIGNED TASK
+	-----------------------------------------------------------------------------------------------------------------------------------	
+	
+	- INTRO & OUTRO-Screen - ASCII (.TXT files)																			- Plamen 
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- BOSSFIGHT /when score is %3==0 (except for 0)																		- Vasil? OTHER?
+		- audio sample to be played (the one prepared by Emo and integrated by Joro P.)
+		- botCount ++
+		- Decrease Thread.Sleep so that bots move faster
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- AUDIO PRODUCTION																									- Emil
+		2 audio samples (.WAV):
+		- for Introscreen (5-10 sec)
+		- for BossFight(3-5 sec) - should be 'suspense' audio
+		2 sounds(.WAV):
+		- for collection of target - should be 'Victorious' sound
+		- for being caught by bot - should be 'sad' sound
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- AUDIO INTEGRATION	 - Intro & BossFight samples + target sound + bot-encounter	sound								- Joro P.
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- PRESENTATION - to be finalized upon project end																	- Ivan 
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- CALIBRATION of Thread.Sleep for Normal play and bossFight															- Daniel ?
+	-----------------------------------------------------------------------------------------------------------------------------------
+	
+	- FINAL polish and integration check																				- Ilian
+	===================================================================================================================================
+	
+
+
+COULD BE DONE	
+
+	- Shortest path algo (Dijkstra) for bot movement																	- eventually by Joro P.
