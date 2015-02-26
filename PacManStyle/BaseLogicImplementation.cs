@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections;
 using System.IO;
-using System.Media;
 
 namespace TankWars
 {
@@ -50,14 +49,17 @@ namespace TankWars
             int lives = 3;
             matrixHeight = board.GetLength(0);
             matrixWidth = board.GetLength(1);
+            Console.CursorVisible = false;
 
             Console.BufferHeight = Console.WindowHeight;
             DrawIntroScreen(); 
             DrawConsoleLayout();
-            PrintBoard(board);
+            string printBoard = PrintBoard(board);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine(printBoard);
             Position player = InitializePlayer();
             List<Position> bots = GenerateBots(board);
-            Position target = GenerateTarget();
+            Position target = GenerateTarget(board);
 
             DrawBots(bots, botsSymbols);
             bool gamerunning = true;
@@ -65,6 +67,8 @@ namespace TankWars
             while (gamerunning)
             {
                 ClearConsole(player, target, bots);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write(printBoard);
                 bool targetAcquired = false;
 
                 if (Console.KeyAvailable)
@@ -72,13 +76,12 @@ namespace TankWars
                     player = MovePlayer(player, board);
                 }
 
-                bots = BotCrashTests(bots);
                 bots = MoveBotsPosition(bots, board);
                 targetAcquired = IsTargetAcquired(player, target);
 
                 if (targetAcquired)
                 {
-                    target = GenerateTarget();
+                    target = GenerateTarget(board);
                     score++;
                 }
 
@@ -96,6 +99,7 @@ namespace TankWars
                     lives--;
                     if (lives > 0)
                     {
+                        ClearConsole(player, target, bots);
                         player = InitializePlayer();
                         bots = GenerateBots(board);
                         gamerunning = true;
@@ -118,22 +122,17 @@ namespace TankWars
 
         static void ClearConsole(Position player, Position target, List<Position> bots)
         {
-            Console.SetCursorPosition(player.Y, player.X);
-            Console.Write(" ");
-            Console.SetCursorPosition(50, 10);
-            Console.Write(" ");
-            Console.SetCursorPosition(target.Y, target.X);
-            Console.Write(" ");
-            for (int i = 0; i < bots.Count; i++)
-            {
-                Console.SetCursorPosition(bots[i].Y, bots[i].X);
-                Console.Write(" ");
-            }
+           Console.SetCursorPosition(player.Y, player.X);
+           Console.Write(" ");
+           Console.SetCursorPosition(50, 10);
+           Console.Write(" ");
+           Console.SetCursorPosition(target.Y, target.X);
+           Console.Write(" ");
+           Console.Clear();
         }
 
         static void DrawEndScreen(int score)
         {
-            //throw new NotImplementedException();
             Console.Clear();
             Console.SetCursorPosition(0, 0);
             Console.BackgroundColor = ConsoleColor.DarkMagenta;
@@ -159,11 +158,11 @@ namespace TankWars
 
         static void DrawIntroScreen()
         {
-            Console.SetBufferSize(80, 25);
-            Console.SetWindowSize(80, 25);
+       //     Console.SetBufferSize(80, 33);
+            Console.SetWindowSize(80, 33);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.OutputEncoding = System.Text.Encoding.ASCII;
-            string path = "../../Screens/IntroScreen";
+            string path = "../../Screens/IntroScreen.txt";
             StreamReader reader = new StreamReader(path);
             string text = reader.ReadToEnd();
             reader.Close();
@@ -202,130 +201,13 @@ namespace TankWars
                 direction = 3;
             }
 
-            // SHOULD BE ADDED check if player is attempting to move outside board
-            //if ((player.X == 1 && direction == 2) || (player.Y == 1 && direction == 1) || (player.X == matrixHeight - 2 && direction == 3) || (player.Y == matrixWidth - 2 && direction == 0))
-            //{
-            //    return player;
-            //}
-
-            if (board[player.X + directions[direction].X, player.Y + directions[direction].Y] == 0)
+            if (board[player.X + directions[direction].X, player.Y + directions[direction].Y] != 1)
             {
                 player = new Position(player.X + directions[direction].X, player.Y + directions[direction].Y, 0);
             }
 
             return player;
-        }
-
-        static List<Position> BotCrashTests(List<Position> bots)
-        {
-            int crashedBotCoordinateX = 0;
-            int crashedBotCoordinateY = 0;
-
-            int crashedBotCurrentDirection = 0;
-            int currentCordinateX = 0;
-            int currentCordinateY = 0;
-            for (int bot = 0; bot < botsCount; bot++)
-            {
-                if (bots[bot].X <= 3) // to extract in method
-                {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    //crashedBotCurrentDirection = 0;
-                    bool correctDirection = false;
-                    while (correctDirection == false)
-                    {
-                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 1)
-                        {
-                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
-                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
-
-                            correctDirection = true;
-                        }
-                    }
-
-                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
-                }
-
-                if (bots[bot].X > matrixWidth - 3)
-                {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    //crashedBotCurrentDirection = 0;
-                    bool correctDirection = false;
-                    while (correctDirection == false)
-                    {
-                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 0)
-                        {
-                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
-                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
-
-                            correctDirection = true;
-                        }
-                    }
-
-                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
-                }
-
-                if (bots[bot].Y < 2)
-                {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    //crashedBotCurrentDirection = 0;
-                    bool correctDirection = false;
-                    while (correctDirection == false)
-                    {
-                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 3)
-                        {
-                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
-                            currentCordinateY = crashedBotCoordinateY - directions[crashedBotCurrentDirection].Y;
-
-                            correctDirection = true;
-                        }
-                    }
-
-                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
-                }
-
-                if (bots[bot].Y > matrixHeight - 3)
-                {
-                    crashedBotCoordinateX = bots[bot].X;
-                    crashedBotCoordinateY = bots[bot].Y;
-                    //crashedBotCurrentDirection = 0;
-                    bool correctDirection = false;
-                    while (correctDirection == false)
-                    {
-                        crashedBotCurrentDirection = randomIntGenerator.Next(0, 4);
-                        if (crashedBotCurrentDirection != 3)
-                        {
-                            currentCordinateX = crashedBotCoordinateX + directions[crashedBotCurrentDirection].X;
-                            currentCordinateY = crashedBotCoordinateY + directions[crashedBotCurrentDirection].Y;
-
-                            correctDirection = true;
-                        }
-                    }
-
-                    bots[bot] = new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection);
-                }
-            }
-
-            return bots;
-        }
-
-        static List<Position> SetBotPosition(List<Position> bots, int crashedBotCurrentDirection, int currentBot)
-        {
-            int crashedBotCoordinateX = 0;
-            int crashedBotCoordinateY = 0;
-
-            crashedBotCoordinateX = bots[currentBot].X;
-            crashedBotCoordinateY = bots[currentBot].Y;
-            bots.RemoveAt(currentBot);
-            bots.Add(new Position(crashedBotCoordinateX, crashedBotCoordinateY, crashedBotCurrentDirection));
-
-            return bots;
-        }
+        }     
 
         static List<Position> MoveBotsPosition(List<Position> bots, int[,] board)
         {
@@ -342,7 +224,7 @@ namespace TankWars
             {
                 randomDirection = CopyBots[i].CurrentDirectionBot;
                 nextPosX = CopyBots[i].X + directions[randomDirection].X;
-                nextPosY = CopyBots[i].Y - directions[randomDirection].Y;
+                nextPosY = CopyBots[i].Y + directions[randomDirection].Y;
                 currCordinateX = CopyBots[i].X;
                 currCordinateY = CopyBots[i].Y;
                 CorrectDirection = false;
@@ -353,7 +235,7 @@ namespace TankWars
                     {
                         currDirection = randomIntGenerator.Next(0, 4);
                         if (currDirection != randomDirection &&
-                            board[currCordinateX + directions[currDirection].X, currCordinateY - directions[currDirection].Y] == 0)
+                            board[currCordinateX + directions[currDirection].X, currCordinateY + directions[currDirection].Y] == 0)
                         {
                             CorrectDirection = true;
                             CopyBots[i] = new Position(currCordinateX, currCordinateY, currDirection);
@@ -374,7 +256,7 @@ namespace TankWars
                 {
 
                     randomDirection = CopyBots[i].CurrentDirectionBot;
-                    bots.Add(new Position(CopyBots[i].X + directions[randomDirection].X, CopyBots[i].Y - directions[randomDirection].Y, randomDirection));
+                    bots.Add(new Position(CopyBots[i].X + directions[randomDirection].X, CopyBots[i].Y + directions[randomDirection].Y, randomDirection));
                 }
 
             }
@@ -405,12 +287,12 @@ namespace TankWars
             for (int i = 0; i < botsCount; i++)
             {
                 AllRightPosition = false;
-                int randomX = randomIntGenerator.Next(1, matrixWidth - 1);
-                int randomY = randomIntGenerator.Next(1, matrixHeight - 1);
+                int randomX = randomIntGenerator.Next(1, matrixHeight - 1);
+                int randomY = randomIntGenerator.Next(1, matrixWidth - 1);
                 while (AllRightPosition == false)
                 {
-                    randomY = randomIntGenerator.Next(1, matrixHeight - 1);
-                    randomX = randomIntGenerator.Next(1, matrixWidth - 1);
+                    randomY = randomIntGenerator.Next(1, matrixWidth - 1);
+                    randomX = randomIntGenerator.Next(1, matrixHeight - 1);
                     if (board[randomX, randomY] == 0)
                     {
                         AllRightPosition = true;
@@ -423,9 +305,18 @@ namespace TankWars
             return bots;
         }
 
-        static Position GenerateTarget()
+        static Position GenerateTarget(int[,] board)
         {
-            Position target = new Position(randomIntGenerator.Next(5, matrixWidth - 5), randomIntGenerator.Next(4, matrixHeight - 4), 0);
+            Position target = new Position();
+            while (true)
+            {
+                target = new Position(randomIntGenerator.Next(5, matrixHeight - 5), randomIntGenerator.Next(4, matrixWidth - 4), 0);
+                if (board[target.X, target.Y] == 0)
+                {
+                    break;
+                }
+            }
+              
             return target;
         }
 
@@ -504,37 +395,6 @@ namespace TankWars
 
             return targetAcquired;
         }
-        static void CheckIfOnWall(List<Position> bots, int[,] board)
-        {
-            int currentPosX = 0;
-            int currentPosY = 0;
-            int oldDirection = 0;
-            bool correctDirection = false;
-            int currDirection = 0;
-            for (int i = 0; i < bots.Count; i++)
-            {
-                currentPosX = bots[i].X;
-                currentPosY = bots[i].Y;
-                oldDirection = bots[i].CurrentDirectionBot;
-                if (board[currentPosX, currentPosY] == 1
-            || board[currentPosX + directions[bots[i].CurrentDirectionBot].X, currentPosY - directions[bots[i].CurrentDirectionBot].Y] == 0
-                    )
-                {
-                    while (correctDirection == false)
-                    {
-                        currDirection = randomIntGenerator.Next(0, 4);
-                        if (board[currentPosX + directions[currDirection].X, currentPosY - directions[currDirection].Y] == 0)
-                        {
-                            correctDirection = true;
-                        }
-                    }
-
-                    correctDirection = false;
-                    bots.RemoveAt(i);
-                    bots.Add(new Position(currentPosX, currentPosY, currDirection));
-                }
-            }
-        }
 
         // maze
         static int[,] LoadBoard(int currentBoardNumber)     // This method can call any of the preset 3 boards, each in separate file, respectively named board1.txt, board2.txt and board3.txt
@@ -558,7 +418,7 @@ namespace TankWars
                 return boardToLoad;
             }
         }
-        static void PrintBoard(int[,] board)
+        static string PrintBoard(int[,] board)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -570,20 +430,9 @@ namespace TankWars
                 }
                 sb.Append("\n");
             }
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine(sb);
+ 
+            return sb.ToString();
         }
 
-
-        static void PlaySong(string songName, SoundPlayer player)
-        {
-            player = new SoundPlayer("../../Songs/" + songName + ".wav");
-            player.Play();
-        }
-
-        static void StopSong(SoundPlayer player)
-        {
-            player.Stop();
-        }
     }
 }
