@@ -135,10 +135,18 @@ namespace TankWars
         static void DrawEndScreen(int score)
         {
             Console.Clear();
-            Console.SetCursorPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.OutputEncoding = System.Text.Encoding.ASCII;
+            string path = "../../Screens/GameOverScreen.txt";
+            StreamReader reader = new StreamReader(path);
+            string text = reader.ReadToEnd();
+            reader.Close();
+            Console.WriteLine(text);
+            Console.SetCursorPosition(15, 15);
             Console.BackgroundColor = ConsoleColor.DarkMagenta;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("Game OVER ! Your score is ... {0} ", score);
+            
+            Console.Write("Your score is ... {0} ", score);
         }
 
         static void DrawBossScreen()                    // this method should be called just before Boss fight starts
@@ -159,9 +167,9 @@ namespace TankWars
 
         static void DrawIntroScreen()
         {
-            Console.SetBufferSize(80, 25);
-            Console.SetWindowSize(80, 25);
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetBufferSize(80, 30);
+            Console.SetWindowSize(80, 30);
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.OutputEncoding = System.Text.Encoding.ASCII;
             string path = "../../Screens/IntroScreen.txt";
             StreamReader reader = new StreamReader(path);
@@ -354,7 +362,7 @@ namespace TankWars
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Your score is ... : {0}", score);
             Console.SetCursorPosition(50, 11);
-            Console.Write("Lives: {0} x ♥", lives);
+            Console.Write("Lives: {0} x {1}", lives, (char)3);
         }
 
         static void DrawTarget(Position target)

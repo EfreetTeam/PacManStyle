@@ -2,15 +2,9 @@
 MUST HAVE
 
 	-----------------------------------------------------------------------------------------------------------------------------------
-	
-	- FIX BUG for Bots going through walls																				- Ilian
-	-----------------------------------------------------------------------------------------------------------------------------------
 
 	- implementation of BOT-SYMBOLs to be changed when their direction is changed (use provided by Joro P. chars)		- UNASSIGNED TASK
 	-----------------------------------------------------------------------------------------------------------------------------------	
-	
-	- INTRO & OUTRO-Screen - ASCII (.TXT files)																			- Plamen 
-	-----------------------------------------------------------------------------------------------------------------------------------
 	
 	- BOSSFIGHT /when score is %3==0 (except for 0)																		- Vasil? OTHER?
 		- audio sample to be played (the one prepared by Emo and integrated by Joro P.)
