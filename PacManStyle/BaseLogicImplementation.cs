@@ -51,7 +51,7 @@ namespace TankWars
             matrixWidth = board.GetLength(1);
 
             Console.BufferHeight = Console.WindowHeight;
-            //  DrawIntroScreen(); 
+            DrawIntroScreen(); 
             DrawConsoleLayout();
             PrintBoard(board);
             Position player = InitializePlayer();
@@ -158,7 +158,16 @@ namespace TankWars
 
         static void DrawIntroScreen()
         {
-            throw new NotImplementedException();
+            Console.SetBufferSize(80, 33);
+            Console.SetWindowSize(80, 33);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.OutputEncoding = System.Text.Encoding.ASCII;
+            string path = "../../IntroScreen.txt";
+            StreamReader reader = new StreamReader(path);
+            string text = reader.ReadToEnd();
+            reader.Close();
+            Console.WriteLine(text);
+            Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);    
         }
 
         static Position InitializePlayer()
