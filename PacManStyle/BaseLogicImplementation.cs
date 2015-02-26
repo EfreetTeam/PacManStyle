@@ -53,7 +53,7 @@ namespace TankWars
             Console.CursorVisible = false;
 
             Console.BufferHeight = Console.WindowHeight;
-            DrawIntroScreen(); 
+            DrawIntroScreen();
             DrawConsoleLayout();
             string printBoard = PrintBoard(board);
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -123,13 +123,13 @@ namespace TankWars
 
         static void ClearConsole(Position player, Position target, List<Position> bots)
         {
-           Console.SetCursorPosition(player.Y, player.X);
-           Console.Write(" ");
-           Console.SetCursorPosition(50, 10);
-           Console.Write(" ");
-           Console.SetCursorPosition(target.Y, target.X);
-           Console.Write(" ");
-           Console.Clear();
+            Console.SetCursorPosition(player.Y, player.X);
+            Console.Write(" ");
+            Console.SetCursorPosition(50, 10);
+            Console.Write(" ");
+            Console.SetCursorPosition(target.Y, target.X);
+            Console.Write(" ");
+            Console.Clear();
         }
 
         static void DrawEndScreen(int score)
@@ -145,7 +145,7 @@ namespace TankWars
             Console.SetCursorPosition(15, 15);
             Console.BackgroundColor = ConsoleColor.DarkMagenta;
             Console.ForegroundColor = ConsoleColor.Green;
-            
+
             Console.Write("Your score is ... {0} ", score);
         }
 
@@ -176,7 +176,7 @@ namespace TankWars
             string text = reader.ReadToEnd();
             reader.Close();
             Console.WriteLine(text);
-            Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);    
+            Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);
         }
 
         static Position InitializePlayer()
@@ -216,7 +216,7 @@ namespace TankWars
             }
 
             return player;
-        }     
+        }
 
         static List<Position> MoveBotsPosition(List<Position> bots, int[,] board)
         {
@@ -227,8 +227,10 @@ namespace TankWars
             bool CorrectDirection = false;
             int nextPosX = 0;
             int nextPosY = 0;
+
             List<Position> CopyBots = new List<Position>(bots);
             bots.Clear();
+
             for (int i = 0; i < botsCount; i++)
             {
                 randomDirection = CopyBots[i].CurrentDirectionBot;
@@ -237,6 +239,7 @@ namespace TankWars
                 currCordinateX = CopyBots[i].X;
                 currCordinateY = CopyBots[i].Y;
                 CorrectDirection = false;
+
                 if (board[nextPosX, nextPosY] == 1)
                 {
                     CorrectDirection = false;
@@ -250,27 +253,23 @@ namespace TankWars
                             CopyBots[i] = new Position(currCordinateX, currCordinateY, currDirection);
                         }
                     }
-
-
                 }
                 else
                 {
                     CorrectDirection = true;
                 }
-
             }
+
             if (CorrectDirection)
             {
                 for (int i = 0; i < botsCount; i++)
                 {
-
                     randomDirection = CopyBots[i].CurrentDirectionBot;
                     bots.Add(new Position(CopyBots[i].X + directions[randomDirection].X, CopyBots[i].Y + directions[randomDirection].Y, randomDirection));
                 }
 
             }
             return bots;
-
         }
 
         static Position[] GetDirections()
@@ -278,12 +277,9 @@ namespace TankWars
             Position[] directions = new Position[] 
             {
                  new Position(0,1,0),    //right
-                 new Position(0,-1,0),    //left
+                 new Position(0,-1,0),   //left
                  new Position(-1,0,0),   //up
                  new Position(1,0, 0)    //down
-                
-               
-               
             };
 
             return directions;
@@ -308,7 +304,6 @@ namespace TankWars
                     }
                 }
                 bots.Add(new Position(randomX, randomY, randomIntGenerator.Next(0, 4)));
-
             }
 
             return bots;
@@ -325,7 +320,7 @@ namespace TankWars
                     break;
                 }
             }
-              
+
             return target;
         }
 
@@ -380,7 +375,6 @@ namespace TankWars
             {
                 if (bots[i].X == player.X && bots[i].Y == player.Y)
                 {
-
                     //Console.Clear();
                     //Console.SetCursorPosition(0, 0);
                     //Console.BackgroundColor = ConsoleColor.DarkMagenta;
@@ -424,9 +418,11 @@ namespace TankWars
                     lineNumber++;
                     line = reader.ReadLine();
                 }
+
                 return boardToLoad;
             }
         }
+
         static string PrintBoard(int[,] board)
         {
             StringBuilder sb = new StringBuilder();
@@ -439,14 +435,13 @@ namespace TankWars
                 }
                 sb.Append("\n");
             }
- 
+
             return sb.ToString();
         }
 
-
-        static void PlaySong(string songName, SoundPlayer player)
+        static void PlaySong(string soundName, SoundPlayer player)
         {
-            player = new SoundPlayer("../../Songs/" + songName + ".wav");
+            player = new SoundPlayer("../../Sounds/" + soundName + ".wav");
             player.Play();
         }
 
