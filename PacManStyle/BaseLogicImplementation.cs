@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections;
 using System.IO;
+using System.Media;
 
 namespace TankWars
 {
@@ -158,8 +159,8 @@ namespace TankWars
 
         static void DrawIntroScreen()
         {
-       //     Console.SetBufferSize(80, 33);
-            Console.SetWindowSize(80, 33);
+            Console.SetBufferSize(80, 25);
+            Console.SetWindowSize(80, 25);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.OutputEncoding = System.Text.Encoding.ASCII;
             string path = "../../Screens/IntroScreen.txt";
@@ -434,5 +435,16 @@ namespace TankWars
             return sb.ToString();
         }
 
+
+        static void PlaySong(string songName, SoundPlayer player)
+        {
+            player = new SoundPlayer("../../Songs/" + songName + ".wav");
+            player.Play();
+        }
+
+        static void StopSong(SoundPlayer player)
+        {
+            player.Stop();
+        }
     }
 }
