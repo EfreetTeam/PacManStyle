@@ -107,6 +107,7 @@ namespace TankWars
                     }
                     else
                     {
+                        SoundPlayer eatTarget = PlaySound("boss");
                         DrawEndScreen(score);
                     }
                 }
@@ -136,7 +137,7 @@ namespace TankWars
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.OutputEncoding = System.Text.Encoding.ASCII;
+            Console.OutputEncoding = Encoding.ASCII;
             string path = "../../Screens/GameOverScreen.txt";
             StreamReader reader = new StreamReader(path);
             string text = reader.ReadToEnd();
@@ -171,7 +172,7 @@ namespace TankWars
             Console.SetWindowSize(80, 30);
             SoundPlayer intro = PlaySound("Intro");
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.OutputEncoding = System.Text.Encoding.ASCII;
+            Console.OutputEncoding = Encoding.ASCII;
             string path = "../../Screens/IntroScreen.txt";
             StreamReader reader = new StreamReader(path);
             string text = reader.ReadToEnd();
@@ -179,7 +180,6 @@ namespace TankWars
             Console.WriteLine(text);
             Console.ReadKey(); // TODO: check if the key == ENTER
             StopSound(intro);
-            // Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);
         }
 
         static Position InitializePlayer()
@@ -384,6 +384,7 @@ namespace TankWars
                     //Console.ForegroundColor = ConsoleColor.Green;
                     //Console.Write("Game OVER ! Your score is ... {0} ", score);
                     gamerunning = false;
+                    SoundPlayer eatTarget = PlaySound("death");
                     return gamerunning;
                 }
             }
