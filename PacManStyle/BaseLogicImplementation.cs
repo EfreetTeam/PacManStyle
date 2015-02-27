@@ -169,6 +169,7 @@ namespace TankWars
         {
             Console.SetBufferSize(80, 30);
             Console.SetWindowSize(80, 30);
+            SoundPlayer intro = PlaySound("Intro");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.OutputEncoding = System.Text.Encoding.ASCII;
             string path = "../../Screens/IntroScreen.txt";
@@ -176,7 +177,9 @@ namespace TankWars
             string text = reader.ReadToEnd();
             reader.Close();
             Console.WriteLine(text);
-            Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);
+            Console.ReadKey(); // TODO: check if the key == ENTER
+            StopSound(intro);
+            // Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 110); Console.Beep(2000, 500);
         }
 
         static Position InitializePlayer()
@@ -439,13 +442,15 @@ namespace TankWars
             return sb.ToString();
         }
 
-        static void PlaySong(string soundName, SoundPlayer player)
+        static SoundPlayer PlaySound(string soundName)
         {
-            player = new SoundPlayer("../../Sounds/" + soundName + ".wav");
+            SoundPlayer player = new SoundPlayer("../../Sounds/" + soundName + ".wav");
             player.Play();
+
+            return player;
         }
 
-        static void StopSong(SoundPlayer player)
+        static void StopSound(SoundPlayer player)
         {
             player.Stop();
         }
