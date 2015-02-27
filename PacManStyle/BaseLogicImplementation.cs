@@ -397,6 +397,7 @@ namespace TankWars
             if (player.X == target.X && player.Y == target.Y)
             {
                 targetAcquired = true;
+                SoundPlayer eatTarget = PlaySound("eattarget");
             }
 
             return targetAcquired;
