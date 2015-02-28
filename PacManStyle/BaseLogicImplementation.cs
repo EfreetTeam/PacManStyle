@@ -109,9 +109,9 @@ namespace TankWars
                     {
                         SoundPlayer eatTarget = PlaySound("boss");
                         DrawEndScreen(score);
+                        //Highscores(score);                    //Highscores method
                     }
                 }
-
                 // if (currentLive < previousLive)
                 //  {
                 //      player = InitializePlayer();
@@ -455,6 +455,50 @@ namespace TankWars
         static void StopSound(SoundPlayer player)
         {
             player.Stop();
+        }
+        static void Highscores(int score)                                                   //Highscore logic (unfinished)
+        {
+            Console.Write("Enter your name: ");
+            string name = Console.ReadLine();
+            Dictionary<string, int> Highscore = new Dictionary<string, int>();
+            using (StreamReader HighscoreFile = new StreamReader("..//..//Highscore.txt"))
+            {
+                bool check = false;
+                int currentline = 1;
+                string ReadName = "";
+                int ReadScore = 0;
+                string currentlinetext = "";
+                while ((currentlinetext = HighscoreFile.ReadLine()) != null)
+                {
+
+                    if (currentline % 2 == 1)
+                    {
+                        ReadName = currentlinetext;
+                        currentline++;
+                    }
+                    else if (currentline % 2 == 0)
+                    {
+                        ReadScore = int.Parse(currentlinetext);
+                        currentline++;
+                        check = true;
+                    }
+                    if (check)
+                    {
+                        Highscore.Add(ReadName, ReadScore);
+                        ReadName = "";
+                        ReadScore = 0;
+                        check = false;
+                    }
+                }
+                Highscore.Add(name, score);
+                var min = Highscore.Aggregate((l, r) => l.Value < r.Value ? l : r).Key;                     //Gets the key with the lowest value
+                Highscore.Remove(min);                                                                      //and deletes that pair, so the dictionary has 10 elements again
+                var sortedDict = from entry in Highscore orderby entry.Value descending select entry;
+                //foreach (KeyValuePair<string, int> pair in sortedDict)                                    //Just to see it sorts it correctly and removes the lowest value
+                //{
+                //    Console.WriteLine("!{0}! !{1}!", pair.Key, pair.Value);
+                //}
+            }
         }
     }
 }

@@ -1,0 +1,20 @@
+In main method:
+created new int lives = 3;
+Added check if gamerunning == false and there are lives left, gamerunning = true.
+
+In DrawEndScreen method:
+Has new parameter: int score;
+Contains temporarily end game screen(taken from the CheckIfBotHitPlayer method).
+
+In DrawPlayerInfo method:
+Has new parameter: int lives;
+Now prints the remaining lives of the player.
+
+ChechIfBotHitPlayer method:
+Now only checks if the player and the bot collided: Now does not print the end screen.
+
+*Bug: When the player and a bot collide, the symbol of the bot remains on the spot of the collision. Any ideas how to fix this?
+
+By Daniel Karadaliev
+18:28
+23.2.2015 ã.
