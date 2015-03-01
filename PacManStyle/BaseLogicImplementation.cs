@@ -109,7 +109,7 @@ namespace TankWars
                     {
                         SoundPlayer eatTarget = PlaySound("boss");
                         DrawEndScreen(score);
-                        //Highscores(score);                    //Highscores method
+                        Highscores(score);                    //Highscores method
                     }
                 }
                 // if (currentLive < previousLive)
@@ -456,49 +456,82 @@ namespace TankWars
         {
             player.Stop();
         }
-        static void Highscores(int score)                                                   //Highscore logic (unfinished)
+        static void Highscores(int score)
         {
-            Console.Write("Enter your name: ");
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("Enter your name!");
             string name = Console.ReadLine();
-            Dictionary<string, int> Highscore = new Dictionary<string, int>();
-            using (StreamReader HighscoreFile = new StreamReader("..//..//Highscore.txt"))
+            Console.Clear();
+            List<string> names = new List<string>();
+            List<int> scores = new List<int>();
+            using (StreamReader ReadFile = new StreamReader("..//..//..//Highscore.txt"))       //Extracting the data from the text file
             {
-                bool check = false;
-                int currentline = 1;
-                string ReadName = "";
-                int ReadScore = 0;
-                string currentlinetext = "";
-                while ((currentlinetext = HighscoreFile.ReadLine()) != null)
+                int CurrentLine = 1;
+                string TextLine = "";
+                while ((TextLine = ReadFile.ReadLine()) != null)
                 {
-
-                    if (currentline % 2 == 1)
+                    if (CurrentLine % 2 == 1)
                     {
-                        ReadName = currentlinetext;
-                        currentline++;
+                        names.Add(TextLine);
+                        CurrentLine++;
                     }
-                    else if (currentline % 2 == 0)
+                    else if (CurrentLine % 2 == 0)
                     {
-                        ReadScore = int.Parse(currentlinetext);
-                        currentline++;
-                        check = true;
-                    }
-                    if (check)
-                    {
-                        Highscore.Add(ReadName, ReadScore);
-                        ReadName = "";
-                        ReadScore = 0;
-                        check = false;
+                        int number = int.Parse(TextLine);
+                        scores.Add(number);
+                        CurrentLine++;
                     }
                 }
-                Highscore.Add(name, score);
-                var min = Highscore.Aggregate((l, r) => l.Value < r.Value ? l : r).Key;                     //Gets the key with the lowest value
-                Highscore.Remove(min);                                                                      //and deletes that pair, so the dictionary has 10 elements again
-                var sortedDict = from entry in Highscore orderby entry.Value descending select entry;
-                //foreach (KeyValuePair<string, int> pair in sortedDict)                                    //Just to see it sorts it correctly and removes the lowest value
-                //{
-                //    Console.WriteLine("!{0}! !{1}!", pair.Key, pair.Value);
-                //}
             }
+            names.Add(name);                                //Add the currently achieved score
+            scores.Add(score);
+            for (int i = 0; i < scores.Count; i++)          //Selection Sort
+            {
+                string TempName = "";
+                int TempScore = 0;
+                int min = 0;
+                min = i;
+                for (int j = i + 1; j < scores.Count; j++)
+                {
+                    if (scores[j] < scores[min])
+                    {
+                        min = j;
+                    }
+                }
+                TempScore = scores[min];
+                TempName = names[min];
+                scores[min] = scores[i];
+                names[min] = names[i];
+                scores[i] = TempScore;
+                names[i] = TempName;                        //Selection Sort
+            }
+            scores.Reverse();                               //Reversing the Lists in Descending order
+            names.Reverse();
+            scores.RemoveAt(scores.Count - 1);              //Removing the Last element (Lowest score)
+            names.RemoveAt(names.Count - 1);
+            using (StreamWriter WriteFile = new StreamWriter("..//..//..//Highscore.txt"))     //Writing the new Highscore table to the same file!
+            {
+                for (int i = 0; i < scores.Count; i++)
+                {
+                    WriteFile.WriteLine(names[i]);
+                    WriteFile.WriteLine(scores[i]);
+                }
+            }
+            string str1 = "Name";
+            string str2 = "Score";
+            Console.WriteLine("Highscores!");
+            Console.WriteLine("_________________________");           //25 * _
+            Console.WriteLine("{0,13}{1,8}", str1, str2);
+            for (int i = 0, line = 1; i < 9; i++, line++)
+            {
+                Console.WriteLine("|{0}.{1,10}{2,5}|", line, names[i], scores[i]);
+                if (i == 8)
+                {
+                    Console.WriteLine("|10.{0,9}{1,5}|", names[9], scores[9]);
+                }
+            }
+            Console.WriteLine("_________________________");           ////25 * _
         }
     }
 }
