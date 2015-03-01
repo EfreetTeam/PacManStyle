@@ -520,18 +520,13 @@ namespace TankWars
             }
             string str1 = "Name";
             string str2 = "Score";
-            Console.WriteLine("Highscores!");
-            Console.WriteLine("_________________________");           //25 * _
-            Console.WriteLine("{0,13}{1,8}", str1, str2);
+            Console.WriteLine("\n Highscores!\n {0}", new string('-', 24));
+            Console.WriteLine(" |{0,13}{1,8} |\n {2}", str1, str2, new string('-', 24));
             for (int i = 0, line = 1; i < 9; i++, line++)
             {
-                Console.WriteLine("|{0}.{1,10}{2,5}|", line, names[i], scores[i]);
-                if (i == 8)
-                {
-                    Console.WriteLine("|10.{0,9}{1,5}|", names[9], scores[9]);
-                }
+                Console.WriteLine(" | {0}.{1,10}{2,8} |", line, names[i], scores[i]);
             }
-            Console.WriteLine("_________________________");           ////25 * _
+            Console.WriteLine(" | 10.{0,9}{1,8} |\n {2}", names[9], scores[9], new string('-', 24));
         }
     }
 }
