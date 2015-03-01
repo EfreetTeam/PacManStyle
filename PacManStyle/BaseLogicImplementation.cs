@@ -34,14 +34,10 @@ namespace TankWars
         {
             string[] botsSymbols = new string[]
             {
-                "@",
-                "$",
-                "*",
-                "#",
-                "\u15e4",   // left
-                "\u15e7",   // right
-                "\u15e3",   // down
-                "\u15e2"    // up
+                "" +(char)16,   // right
+                "" +(char)17,   // left
+                "" +(char)30,   // up
+                "" +(char)31,   // down
             };
 
             int score = 0;
@@ -107,9 +103,9 @@ namespace TankWars
                     }
                     else
                     {
-                        SoundPlayer eatTarget = PlaySound("boss");
+                        SoundPlayer endGame = PlaySound("boss");
                         DrawEndScreen(score);
-                        Highscores(score);                    //Highscores method
+                        Highscores(score);
                     }
                 }
                 // if (currentLive < previousLive)
@@ -178,7 +174,7 @@ namespace TankWars
             string text = reader.ReadToEnd();
             reader.Close();
             Console.WriteLine(text);
-            Console.ReadKey(); // TODO: check if the key == ENTER
+            Console.ReadKey();
             StopSound(intro);
         }
 
@@ -336,8 +332,7 @@ namespace TankWars
                 // X,Y,Z x,y coordinate Z currentdirection 0,1,2,3 4 < > ^ 
 
                 Console.SetCursorPosition(bots[i].Y, bots[i].X);
-                // Console.Write(botsSymbols[bots[bot].currentDirection]);
-                Console.Write(botsSymbols[i]);
+                Console.Write(botsSymbols[bots[i].CurrentDirectionBot]);
             }
         }
 
@@ -350,8 +345,8 @@ namespace TankWars
         static void DrawPlayer(Position player)
         {
             Console.SetCursorPosition(player.Y, player.X);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("" + (char)1);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("" + (char)2);
         }
 
         static void DrawPlayerInfo(int score, int lives)             //<==
@@ -384,7 +379,7 @@ namespace TankWars
                     //Console.ForegroundColor = ConsoleColor.Green;
                     //Console.Write("Game OVER ! Your score is ... {0} ", score);
                     gamerunning = false;
-                    SoundPlayer eatTarget = PlaySound("death");
+                    SoundPlayer gotCha = PlaySound("death");
                     return gamerunning;
                 }
             }
